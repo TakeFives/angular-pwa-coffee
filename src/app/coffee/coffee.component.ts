@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Coffee } from '../logic/Coffee';
 
 @Component({
   selector: 'app-coffee',
@@ -7,4 +8,21 @@ import { Component } from '@angular/core';
 })
 export class CoffeeComponent {
 
+    coffee = new Coffee();
+    types = [
+      'Espresso',
+      'Latte',
+      'Cappuccino',
+      'Americano',
+      'Mocha',
+      'Macchiato',
+      'Affogato',
+      'Flat White',
+      'Irish Coffee',
+      'Turkish Coffee'
+  ];
+
+    cancel(){}
+
+    save(){}
 }

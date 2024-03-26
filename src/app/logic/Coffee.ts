@@ -7,8 +7,9 @@ export class Coffee {
     rating: number = 0;
     notes: string = '';
     tastingRating!: TastingRating | null;
-
+    
     constructor (
+        public id: string |  null = null,
         public name: string = '',
         public place: string = '',
         public location:  PlaceLocation | null = null,
