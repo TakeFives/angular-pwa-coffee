@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { DataService } from '../data.service';
+import { Coffee } from '../logic/Coffee';
 
 @Component({
   selector: 'app-list',
@@ -6,5 +8,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./list.component.css']
 })
 export class ListComponent {
+    list:  Coffee[] = [];
 
+    constructor(
+      private data:  DataService
+    ){}
+
+    ngOnInit(){
+      this.data.getList((list: Coffee[]) => {
+        this.list = list
+      })
+    }
 }
