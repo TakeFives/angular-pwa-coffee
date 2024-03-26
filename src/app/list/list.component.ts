@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { DataService } from '../data.service';
 import { Coffee } from '../logic/Coffee';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list',

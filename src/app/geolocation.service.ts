@@ -9,14 +9,13 @@ export class GeolocationService {
 
   requestLocation(callback: Function) {
     // W3C Geolocation API
-
     navigator.geolocation.getCurrentPosition(
       position => {
-        callback(position.coords)
-      },
+        callback(position.coords);
+      }, 
       error => {
-        // TODO: log error to the window
-        callback(null)
+        //TODO: log the error in the system
+        callback(null);
       }
     )
   }
@@ -26,7 +25,7 @@ export class GeolocationService {
     if (location.latitude && location.longtitude) {
       query = `${location.latitude},${location.longtitude}`;
     } else {
-      query = `${location.adress},${location.city}`;
+      query = `${location.address},${location.city}`;
     }
 
     if(/iPad|iPhone|iPod/.test(navigator.userAgent)){

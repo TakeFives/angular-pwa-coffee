@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Coffee } from '../logic/Coffee';
+import { GeolocationService } from '../geolocation.service';
+import { TastingRating } from '../logic/TastingRating';
 
 @Component({
   selector: 'app-coffee',
@@ -8,21 +10,43 @@ import { Coffee } from '../logic/Coffee';
 })
 export class CoffeeComponent {
 
-    coffee = new Coffee();
-    types = [
-      'Espresso',
-      'Latte',
-      'Cappuccino',
-      'Americano',
-      'Mocha',
-      'Macchiato',
-      'Affogato',
-      'Flat White',
-      'Irish Coffee',
-      'Turkish Coffee'
+  coffee = new Coffee();
+  types = [
+    'Espresso',
+    'Latte',
+    'Cappuccino',
+    'Americano',
+    'Mocha',
+    'Macchiato',
+    'Affogato',
+    'Flat White',
+    'Irish Coffee',
+    'Turkish Coffee'
   ];
+  tastingEnabled = false;
 
-    cancel(){}
+  constructor(
+    private geolocation:GeolocationService,
+  ){}
 
-    save(){}
+    tastingRatingChanged(checked: boolean){
+      if(checked){
+        this.coffee.tastingRating  = new TastingRating();
+      } else {
+        this.coffee.tastingRating = null;
+      }
+    }
+
+  acquireLocation() { 
+    this.geolocation.requestLocation((location: GeolocationCoordinates | null) => {
+      if(location){
+        this.coffee.location!.latitude = location.latitude;
+        this.coffee.location!.longtitude = location.longitude;
+      }
+    });
+  }
+
+  cancel() { }
+
+  save() { }
 }
