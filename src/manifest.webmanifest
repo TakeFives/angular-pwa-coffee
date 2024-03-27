@@ -4,8 +4,21 @@
   "short_name": "Coffee Rating",
   "theme_color": "orange",
   "background_color": "#fafafa",
+  "description": "This is the best app to track all the  coffees you've tasted on map and rate them.",
   "display": "standalone",
   "scope": "./",
+  "screenshots": [
+    {
+      "src": "assets/screenshots/screenshot-1.png",
+      "sizes": "750x1334",
+      "type":"image/png"
+    },
+    {
+      "src": "assets/screenshots/screenshot-2.png",
+      "sizes": "750x1334",
+      "type":"image/png"
+    }
+  ],
   "start_url": "./?utm_source=pwa",
   "shortcuts": [
     {
