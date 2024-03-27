@@ -7,6 +7,27 @@
   "display": "standalone",
   "scope": "./",
   "start_url": "./?utm_source=pwa",
+  "shortcuts": [
+    {
+      "name": "New Coffee Review",
+      "short_name": "New  Review",
+      "description": "Create a new review for the coffee you like",
+      "url": "/coffee",
+      "icons": [
+        {
+          "src": "assets/icons/icon.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        },
+        {
+          "src": "assets/icons/maskable-icon.png",
+          "sizes": "512x512",
+          "type": "image/png",
+          "purpose": "maskable"
+        }
+      ]
+    }
+  ],
   "icons": [
     {
       "src": "assets/icons/icon.png",
