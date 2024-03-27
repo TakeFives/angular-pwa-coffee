@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Coffee } from '../logic/Coffee';
 import { GeolocationService } from '../geolocation.service';
 import { TastingRating } from '../logic/TastingRating';
+import { DataService } from '../data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-coffee',
@@ -24,9 +26,12 @@ export class CoffeeComponent {
     'Turkish Coffee'
   ];
   tastingEnabled = false;
+  formType: "editing" | "inserting" = "inserting";
 
   constructor(
     private geolocation:GeolocationService,
+    private dataService: DataService,
+    private router: Router
   ){}
 
     tastingRatingChanged(checked: boolean){
@@ -46,7 +51,22 @@ export class CoffeeComponent {
     });
   }
 
-  cancel() { }
+  cancel() { 
+    this.router.navigate(['/']);
+  }
 
-  save() { }
+  save() {
+    let resultFunction = (result:boolean)=> {
+      if(result){
+        this.router.navigate(['/']);
+      } else {
+        //TODO nice error message
+      }
+    }
+
+    if(this.formType === "inserting"){
+      let {id,...insertedCoffee} = this.coffee;
+      this.dataService.save(insertedCoffee, resultFunction);
+    }
+  }
 }

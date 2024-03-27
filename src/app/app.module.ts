@@ -18,6 +18,7 @@ import { AppComponent } from './app.component';
 
 import { ListComponent } from './list/list.component';
 import { CoffeeComponent } from './coffee/coffee.component'
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { CoffeeComponent } from './coffee/coffee.component'
     CoffeeComponent
   ],
   imports: [
+    HttpClientModule,
     FormsModule,
     BrowserModule,
     AppRoutingModule,

@@ -1,49 +1,32 @@
 import { Injectable } from '@angular/core';
-import { PlaceLocation } from './logic/PlaceLocation';
-import { Coffee } from './logic/Coffee';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  constructor() { }
+  public endpoint = "http://localhost:3000";
+  public coffeeEntity = "/coffees";
+
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 
   getList(callback: Function){
-    const list = [
-      new Coffee('1','Espresso', 'Coffee House A', new PlaceLocation('123 Main St', 'New York')),
-      new Coffee('2','Latte', 'Cafe B', new PlaceLocation('456 Elm St', 'Los Angeles')),
-      new Coffee('3', 'Cappuccino', 'Java Junction', new PlaceLocation('789 Oak St', 'Chicago')),
-      new Coffee('4', 'Americano', 'Mocha Madness', new PlaceLocation('101 Pine St', 'San Francisco')),
-      new Coffee('5', 'Mocha', 'Bean Bar', new PlaceLocation('202 Maple St', 'Seattle')),
-      new Coffee('6', 'Macchiato', 'Brew Bistro', new PlaceLocation('303 Cedar St', 'Boston')),
-      new Coffee('7', 'Affogato', 'Sugar & Spice', new PlaceLocation('404 Birch St', 'Miami')),
-      new Coffee('8', 'Flat White', 'Creamy Cafe', new PlaceLocation('505 Walnut St', 'Houston')),
-      new Coffee('9', 'Irish Coffee', 'Shamrock Roasters', new PlaceLocation('606 Spruce St', 'Philadelphia')),
-      new Coffee('10', 'Turkish Coffee', 'Bosphorus Brews', new PlaceLocation('707 Cherry St', 'Atlanta'))
-  ];
-  callback(list);
+   this.httpClient.get(`${this.endpoint}${this.coffeeEntity}`)
+   .subscribe(response => callback(response))
   }
 
-  // getList(): Promise<Coffee[]> {
-  //   return new Promise((resolve, reject) => {
-  //       const list = [
-  //           new Coffee('Espresso', 'Coffee House A', new PlaceLocation('123 Main St', 'New York')),
-  //           new Coffee('Latte', 'Cafe B', new PlaceLocation('456 Elm St', 'Los Angeles')),
-  //           new Coffee('Cappuccino', 'Java Junction', new PlaceLocation('789 Oak St', 'Chicago')),
-  //           new Coffee('Americano', 'Mocha Madness', new PlaceLocation('101 Pine St', 'San Francisco')),
-  //           new Coffee('Mocha', 'Bean Bar', new PlaceLocation('202 Maple St', 'Seattle')),
-  //           new Coffee('Macchiato', 'Brew Bistro', new PlaceLocation('303 Cedar St', 'Boston')),
-  //           new Coffee('Affogato', 'Sugar & Spice', new PlaceLocation('404 Birch St', 'Miami')),
-  //           new Coffee('Flat White', 'Creamy Cafe', new PlaceLocation('505 Walnut St', 'Houston')),
-  //           new Coffee('Irish Coffee', 'Shamrock Roasters', new PlaceLocation('606 Spruce St', 'Philadelphia')),
-  //           new Coffee('Turkish Coffee', 'Bosphorus Brews', new PlaceLocation('707 Cherry St', 'Atlanta'))
-  //       ];
-  //       if (list.length > 0) {
-  //           resolve(list);
-  //       } else {
-  //           reject("Error: Unable to get the list of coffees.");
-  //       }
-  //   });
-// }
+  save(coffee: any, callback:  Function){
+    if (coffee.id) {
+      // TODO: Error checking
+      this.httpClient.put(`${this.endpoint}${this.coffeeEntity}/${coffee.id}`, coffee)
+        .subscribe(response => callback(true));
+    } else {
+      // It's a new item
+      this.httpClient.post(`${this.endpoint}${this.coffeeEntity}`, coffee)
+        .subscribe(response => callback(true));
+    }
+  }
 }
