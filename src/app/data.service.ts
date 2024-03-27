@@ -18,10 +18,16 @@ export class DataService {
    .subscribe(response => callback(response))
   }
 
+  getId(coffeeId:String, callback: Function){
+    this.httpClient.get(`${this.endpoint}${this.coffeeEntity}/${coffeeId}`)
+      .subscribe(res => callback(res));
+  }
+
   save(coffee: any, callback:  Function){
-    if (coffee.id) {
+    console.log('dataService save', coffee)
+    if (coffee._id) {
       // TODO: Error checking
-      this.httpClient.put(`${this.endpoint}${this.coffeeEntity}/${coffee.id}`, coffee)
+      this.httpClient.put(`${this.endpoint}${this.coffeeEntity}/${coffee._id}`, coffee)
         .subscribe(response => callback(true));
     } else {
       // It's a new item

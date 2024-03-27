@@ -18,7 +18,7 @@ export class ListComponent {
     ){}
 
     goDetails(coffee:Coffee){
-      this.router.navigate(['/coffee', coffee.id])
+      this.router.navigate(["/coffee", coffee._id]);
     }
 
     ngOnInit(){

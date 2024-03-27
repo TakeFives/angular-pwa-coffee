@@ -3,7 +3,7 @@ import { Coffee } from '../logic/Coffee';
 import { GeolocationService } from '../geolocation.service';
 import { TastingRating } from '../logic/TastingRating';
 import { DataService } from '../data.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-coffee',
@@ -29,44 +29,63 @@ export class CoffeeComponent {
   formType: "editing" | "inserting" = "inserting";
 
   constructor(
-    private geolocation:GeolocationService,
+    private geolocation: GeolocationService,
     private dataService: DataService,
-    private router: Router
-  ){}
+    private router: Router,
+    private route: ActivatedRoute,
+  ) { }
 
-    tastingRatingChanged(checked: boolean){
-      if(checked){
-        this.coffee.tastingRating  = new TastingRating();
-      } else {
-        this.coffee.tastingRating = null;
+  ngOnInit() {
+
+    this.route.params.subscribe(params => {
+      if (params['id']) {
+        console.log('save on init', params['id'])
+        this.dataService.getId(params['id'], (response: any) => {
+          this.coffee = response;
+          this.formType = "editing";
+          if (this.coffee.tastingRating) {
+            this.tastingEnabled = true;
+          }
+        });
       }
-    }
+    })
+  }
 
-  acquireLocation() { 
+  tastingRatingChanged(checked: boolean) {
+    if (checked) {
+      this.coffee.tastingRating = new TastingRating();
+    } else {
+      this.coffee.tastingRating = null;
+    }
+  }
+
+  acquireLocation() {
     this.geolocation.requestLocation((location: GeolocationCoordinates | null) => {
-      if(location){
+      if (location) {
         this.coffee.location!.latitude = location.latitude;
         this.coffee.location!.longtitude = location.longitude;
       }
     });
   }
 
-  cancel() { 
+  cancel() {
     this.router.navigate(['/']);
   }
 
   save() {
-    let resultFunction = (result:boolean)=> {
-      if(result){
-        this.router.navigate(['/']);
+    let resultFunction = (result: boolean) => {
+      if (result) {
+        this.router.navigate(["/"]);
       } else {
-        //TODO nice error message
+        // TODO: render a nice error message
       }
     }
 
-    if(this.formType === "inserting"){
-      let {id,...insertedCoffee} = this.coffee;
+    if (this.formType === "inserting") {
+      let { _id, ...insertedCoffee } = this.coffee;
       this.dataService.save(insertedCoffee, resultFunction);
+    } else {
+      this.dataService.save(this.coffee, resultFunction);
     }
   }
 }
