@@ -39,7 +39,6 @@ export class CoffeeComponent {
 
     this.route.params.subscribe(params => {
       if (params['id']) {
-        console.log('save on init', params['id'])
         this.dataService.getId(params['id'], (response: any) => {
           this.coffee = response;
           this.formType = "editing";

@@ -24,7 +24,6 @@ export class DataService {
   }
 
   save(coffee: any, callback:  Function){
-    console.log('dataService save', coffee)
     if (coffee._id) {
       // TODO: Error checking
       this.httpClient.put(`${this.endpoint}${this.coffeeEntity}/${coffee._id}`, coffee)
