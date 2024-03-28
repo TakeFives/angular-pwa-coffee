@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SwUpdate } from '@angular/service-worker';
+import { SwPush, SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +12,24 @@ export class AppComponent {
 
   constructor(
     private snackBar: MatSnackBar,
-    private serviceWorkerUpdate: SwUpdate
+    private serviceWorkerUpdate: SwUpdate,
+    private serviceWorkerPush: SwPush
   ) { }
+
+  registerForPush(){
+    if(this.serviceWorkerPush.isEnabled){
+      Notification.requestPermission((permission)=>{
+        if(permission === "granted"){
+          this.serviceWorkerPush.requestSubscription({
+            serverPublicKey: "BBk-q6Wp6wnSE72j2jyZZ6_8GPW4htkcs3JfOpNZim5SsmcqogkN_1jZsE0bosU8WknhfYJbhLKLIxChvKnxZY4"
+          })
+          .then(() => {
+            // TODO: send this details to beckend server
+          });
+        }
+      })
+    }
+  }
 
   updateNetworkStatusUI(){
     if(navigator.onLine){
