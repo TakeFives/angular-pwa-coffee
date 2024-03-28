@@ -13,7 +13,18 @@ export class AppComponent {
     private snackBar: MatSnackBar,
   ) { }
 
+  updateNetworkStatusUI(){
+    if(navigator.onLine){
+      (document.querySelector("body") as any).className = 'online';
+    } else {
+      (document.querySelector("body") as any).className = 'offline';
+    }
+  }
+
   ngOnInit() {
+
+    this.updateNetworkStatusUI();
+
     if (window.matchMedia('(display-mode: browser)').matches) {
       // we are in the browser
       if ('standalone' in navigator) {
