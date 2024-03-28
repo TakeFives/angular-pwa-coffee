@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ export class AppComponent {
 
   constructor(
     private snackBar: MatSnackBar,
+    private serviceWorkerUpdate: SwUpdate
   ) { }
 
   updateNetworkStatusUI(){
@@ -23,8 +25,27 @@ export class AppComponent {
 
   ngOnInit() {
 
+    // checking service worker based updates
+    if(this.serviceWorkerUpdate.isEnabled){
+      this.serviceWorkerUpdate.checkForUpdate();
+      this.serviceWorkerUpdate.versionUpdates
+        .subscribe( update => {
+          if(update.type === "VERSION_READY"){
+            const sb = this.snackBar.open('There is an update available', 
+            'Install now', {duration: 3000});
+            sb.onAction()
+              .subscribe(() => {
+                // TODO: ux check before reloading
+                location.reload();
+              })
+          }
+        })
+    }
+
+    // updating the UI on network changes
     this.updateNetworkStatusUI();
 
+    // inviting the user for installation
     if (window.matchMedia('(display-mode: browser)').matches) {
       // we are in the browser
       if ('standalone' in navigator) {
